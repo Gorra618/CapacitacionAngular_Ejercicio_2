@@ -3,7 +3,7 @@
     <div class="col-md-8 offset-md-2">
       <h1>Log In</h1>
       <form [formGroup]="Form" (ngSubmit)="submitForm()">
-        <div class="row">
+        <div class="row mb-3">
           <div class="col">
             <input
               type="text"
@@ -13,8 +13,12 @@
               formControlName="fname"
               minlength="3"
             />
+            @if (Form.get('fname')?.hasError('minlength') && Form.get('fname')?.dirty) {
+              <div class="alert alert-danger" role="alert">
+                The first name must have a minimum of 3 letters.
+              </div>
+            }
           </div>
-
           <div class="col">
             <input
               type="text"
@@ -24,8 +28,12 @@
               formControlName="lname"
               minlength="3"
             />
+            @if (Form.get('lname')?.hasError('minlength') && Form.get('lname')?.dirty) {
+              <div class="alert alert-danger" role="alert">
+                The last name must have a minimum of 3 letters.
+              </div>
+            }
           </div>
-
           <div class="col-md-2">
             <input
               type="number"
@@ -36,56 +44,75 @@
               min="0"
               max="99"
             />
+            @if (Form.get('age')?.hasError('min') && Form.get('age')?.dirty) {
+              <div class="alert alert-danger" role="alert">Age from 5 years.</div>
+            }
           </div>
-          <div class="row mb-3">
-            <div class="col-sm-10">
-              <input
-                type="email"
-                class="form-control"
-                placeholder="Email"
-                aria-label="Email"
-                formControlName="email"
-              />
-            </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Email"
+              aria-label="Email"
+              formControlName="email"
+            />
+            @if (Form.get('email')?.hasError('email')) {
+              <div class="alert alert-danger" role="alert">Invalid email.</div>
+            }
           </div>
+        </div>
 
-          <div class="row mb-3">
-            <div class="col-sm-10">
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                aria-label="Password"
-                formControlName="password"
-                minlength="8"
-              />
-              @if (Form.get('password')?.hasError('pattern')) {
-                <small class="text-danger">
-                  La contraseña debe contener al menos una mayúscula y un número.
-                </small>
-              }
-            </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              aria-label="Password"
+              formControlName="password"
+              minlength="8"
+            />
+            @if (Form.get('password')?.hasError('pattern')) {
+              <div class="alert alert-danger" role="alert">
+                The password must have at least a capital letter and a number.
+              </div>
+            }
           </div>
+        </div>
 
-          <div class="row mb-3">
-            <div class="col-sm-10">
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Verify password"
-                aria-label="VPassword"
-                formControlName="vpassword"
-              />
-              @if (Form.hasError('passwordError') && Form.get('vpassword')?.dirty) {
-                <small class="text-danger"> Las contraseñas deben coincidir. </small>
-              }
-            </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Verify password"
+              aria-label="VPassword"
+              formControlName="vpassword"
+            />
+            @if (Form.hasError('passwordError') && Form.get('vpassword')?.dirty) {
+              <div class="alert alert-danger" role="alert">Passwords must be the same.</div>
+            }
           </div>
+        </div>
 
+        <div class="d-grid gap-2">
           <button type="submit" [disabled]="Form.invalid" class="btn btn-primary">Sign in</button>
         </div>
       </form>
-      <h1>Usuarios</h1>
+
+      <!-- TABLA -->
+
+      <h1>Users</h1>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search user"
+          (change)="searchUser($event)"
+        />
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>

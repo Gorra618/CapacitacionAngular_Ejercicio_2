@@ -30,8 +30,8 @@ export class DataForm implements OnInit {
       {
         fname: new FormControl('', [Validators.required, Validators.minLength(3)]),
         lname: new FormControl('', [Validators.required, Validators.minLength(3)]),
-        age: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required]),
+        age: new FormControl('', [Validators.required, Validators.min(5)]),
+        email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [
           Validators.required,
           Validators.minLength(8),
@@ -84,5 +84,9 @@ export class DataForm implements OnInit {
     event.preventDefault();
     this.formData.splice(index, 1);
     this.saveData();
+  }
+
+  searchUser(event: Event){
+    
   }
 }
