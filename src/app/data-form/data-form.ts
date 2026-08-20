@@ -18,6 +18,7 @@ import { IForm } from '../models/i-form';
 })
 export class DataForm implements OnInit {
   formData: IForm[] = [];
+  filteredFormData: IForm[] = [];
   Form!: FormGroup;
 
   constructor(private fb: FormBuilder) {}
@@ -25,6 +26,7 @@ export class DataForm implements OnInit {
   ngOnInit(): void {
     const savedData = localStorage.getItem('formData');
     this.formData = savedData ? JSON.parse(savedData) : [];
+    this.filteredFormData = [...this.formData];
 
     this.Form = this.fb.group(
       {
@@ -79,14 +81,19 @@ export class DataForm implements OnInit {
     localStorage.setItem('formData', JSON.stringify(this.formData));
   }
 
-
   deleteUser(event: Event, index: number): void {
     event.preventDefault();
-    this.formData.splice(index, 1);
+    const user = this.filteredFormData[index];
+    this.formData = this.formData.filter((item) => item !== user);
+    this.filteredFormData = this.filteredFormData.filter((item) => item !== user);
     this.saveData();
   }
 
-  searchUser(event: Event){
-    
+  searchUser(event: Event): void {
+    const search = (event.target as HTMLInputElement).value.toLowerCase().trim();
+
+    this.filteredFormData = this.formData.filter((user) =>
+      `${user.fname} ${user.lname} ${user.email}`.toLowerCase().includes(search),
+    );
   }
 }
