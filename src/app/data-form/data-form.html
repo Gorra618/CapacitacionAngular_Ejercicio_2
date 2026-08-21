@@ -98,7 +98,15 @@
         </div>
 
         <div class="d-grid gap-2">
-          <button type="submit" [disabled]="Form.invalid" class="btn btn-primary">Sign in</button>
+          <button type="submit" [disabled]="Form.invalid" class="btn btn-primary">
+            {{ editingUser ? 'Actualizar' : 'Sign in' }}
+          </button>
+
+          @if (editingUser) {
+            <button type="button" class="btn btn-secondary mt-2" (click)="cancelEdit()">
+              Cancelar
+            </button>
+          }
         </div>
       </form>
 
@@ -130,7 +138,12 @@
               <td>{{ item.age }}</td>
               <td>{{ item.email }}</td>
               <td>
-                <button class="btn btn-danger" (click)="deleteUser($event, i)">Eliminar</button>
+                <button class="btn btn-warning me-2" (click)="editUser(item)">
+                  Editar
+                </button>
+                <button class="btn btn-danger" (click)="deleteUser($event, i)">
+                  Eliminar
+                </button>
               </td>
             </tr>
           }

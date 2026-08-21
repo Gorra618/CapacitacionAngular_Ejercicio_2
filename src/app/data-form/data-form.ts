@@ -20,6 +20,7 @@ export class DataForm implements OnInit {
   formData: IForm[] = [];
   filteredFormData: IForm[] = [];
   Form!: FormGroup;
+  editingUser: IForm | null = null;
 
   constructor(private fb: FormBuilder) {}
 
@@ -55,25 +56,47 @@ export class DataForm implements OnInit {
   }
 
   submitForm(): void {
-    const fname = this.Form.value.fname.trim();
-    const lname = this.Form.value.lname.trim();
-    const age = this.Form.value.age;
-    const email = this.Form.value.email.trim();
-    const password = this.Form.value.password.trim();
-    const vpassword = this.Form.value.vpassword.trim();
+    const data: IForm = {
+      fname: this.Form.value.fname.trim(),
+      lname: this.Form.value.lname.trim(),
+      age: this.Form.value.age,
+      email: this.Form.value.email.trim(),
+      password: this.Form.value.password.trim(),
+      vpassword: this.Form.value.vpassword.trim(),
+    };
 
-    // if (!fname || !lname || !age || !email || !password || !vpassword) {
-      // console.log('Faltan datos por completar');
-      // return;
-    // } else if (password !== vpassword) {
-      // console.log('Contraseñas distintas');
-      // return;
-    // }
+    if (this.editingUser) {
+      const index = this.formData.indexOf(this.editingUser);
 
-    const data: IForm = { fname, lname, age, email, password, vpassword };
-    this.formData.push(data);
+      if (index !== -1) {
+        this.formData[index] = data;
+      }
+
+      this.editingUser = null;
+    } else {
+      this.formData.push(data);
+    }
+
+    this.filteredFormData = [...this.formData];
     this.saveData();
-    console.log('Enviado');
+    this.Form.reset();
+  }
+
+  editUser(user: IForm): void {
+    this.editingUser = user;
+
+    this.Form.patchValue({
+      fname: user.fname,
+      lname: user.lname,
+      age: user.age,
+      email: user.email,
+      password: user.password,
+      vpassword: user.vpassword,
+    });
+  }
+
+  cancelEdit(): void {
+    this.editingUser = null;
     this.Form.reset();
   }
 
