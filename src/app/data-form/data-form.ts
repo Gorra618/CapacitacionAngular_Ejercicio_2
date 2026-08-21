@@ -62,13 +62,13 @@ export class DataForm implements OnInit {
     const password = this.Form.value.password.trim();
     const vpassword = this.Form.value.vpassword.trim();
 
-    if (!fname || !lname || !age || !email || !password || !vpassword) {
-      console.log('Faltan datos por completar');
-      return;
-    } else if (password !== vpassword) {
-      console.log('Contraseñas distintas');
-      return;
-    }
+    // if (!fname || !lname || !age || !email || !password || !vpassword) {
+      // console.log('Faltan datos por completar');
+      // return;
+    // } else if (password !== vpassword) {
+      // console.log('Contraseñas distintas');
+      // return;
+    // }
 
     const data: IForm = { fname, lname, age, email, password, vpassword };
     this.formData.push(data);
